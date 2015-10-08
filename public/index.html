@@ -1,0 +1,78 @@
+<html ng-app="myApp">
+	<head>
+		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" media="screen"/>
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" media="screen"/>
+	</head>
+	
+	<body ng-controller="IndexCtrl">
+		<div class="row">
+			<div class="col-md-offset-4 col-md-4">
+				<table class="table table-bordered">
+					<tr ng-repeat="rugbyRanking in rugbyRankings | orderBy:'-pts'">
+						<td>
+							{{$index+1}}
+						</td>
+						<td>
+							{{rugbyRanking.team.name}}
+						</td>
+						
+						<td>
+							{{rugbyRanking.pts}}
+						</td>
+						<td ng-show="$index+1>rugbyRanking.pos || $index+1<rugbyRanking.pos">
+							<div ng-show="$index+1>rugbyRanking.pos">
+								<span style="color:red" class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+								({{rugbyRanking.pos}})
+							</div>
+							
+							<div ng-show="$index+1<rugbyRanking.pos">
+								<span style="color:green"  class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+								({{rugbyRanking.pos}})
+							</div>
+							
+						</td>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="col-md-3">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h2>
+							Results this week
+						</h2>
+						
+						<div class="panel panel-default" ng-repeat="result in thisWeekResults">
+							<div class="panel-body" style="text-align:center">
+								<h3>
+									{{result.teams[0].name}} {{result.scores[0]}}-{{result.scores[1]}} {{result.teams[1].name}}
+								</h3>
+								<p style="color:gray" >
+									{{result.venue.name}}<br>
+									{{result.time.label.slice(0,22)}}
+								</p>
+								<div id="rankingButtons">
+									<button ng-click="applyResultToRankings(result);result.added=true" ng-show="!result.added" type="button" class="btn btn-default btn-sm">
+									  <span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span> Not Added to rankings
+									</button>
+									
+									<button ng-click="revertResultFromRankings(result);result.added=false" ng-show="result.added" type="button" class="btn btn-default btn-sm">
+										<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> Added to rankings
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		
+	
+		<script src="bower_components/angular/angular.min.js"></script>
+		<script src="bower_components/lodash/lodash.min.js"></script>
+		
+		<script src="js/app.js"></script>
+	</body>
+</html>
+
